@@ -11,8 +11,12 @@ export class TodosService {
     @InjectRepository(Todo)
     private todosRepository: Repository<Todo>,
   ) {}
-  create(createTodoDto: CreateTodoDto) {
-    return 'This action adds a new todo';
+  create(createTodoDto: CreateTodoDto): Promise<Todo> {
+    const todo = new Todo();
+    todo.title = createTodoDto.title;
+    todo.body = createTodoDto.body;
+
+    return this.todosRepository.save(todo);
   }
 
   findAll() {
