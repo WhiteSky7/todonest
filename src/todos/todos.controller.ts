@@ -22,22 +22,22 @@ export class TodosController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Todo[]> {
     return this.todosService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todosService.findOne(+id);
+  findOne(@Param('id') id: string): Promise<Todo> {
+    return this.todosService.findOne(id);
   }
 
-  @Put(':id')
+  @Put(':id/update')
   update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todosService.update(+id, updateTodoDto);
+    return this.todosService.update(id, updateTodoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.todosService.remove(+id);
+    return this.todosService.remove(id);
   }
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SubtodosService } from './subtodos.service';
 import { CreateSubtodoDto } from './dto/create-subtodo.dto';
 import { UpdateSubtodoDto } from './dto/update-subtodo.dto';
@@ -19,16 +27,16 @@ export class SubtodosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.subtodosService.findOne(+id);
+    return this.subtodosService.findOne(id);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateSubtodoDto: UpdateSubtodoDto) {
-    return this.subtodosService.update(+id, updateSubtodoDto);
+    return this.subtodosService.update(id, updateSubtodoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.subtodosService.remove(+id);
+    return this.subtodosService.remove(id);
   }
 }

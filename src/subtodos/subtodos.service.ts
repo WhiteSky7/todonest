@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSubtodoDto } from './dto/create-subtodo.dto';
 import { UpdateSubtodoDto } from './dto/update-subtodo.dto';
+import { Repository } from 'typeorm';
+import { Subtodo } from './entities/subtodo.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SubtodosService {
-  create(createSubtodoDto: CreateSubtodoDto) {
-    return 'This action adds a new subtodo';
+  constructor(
+    @InjectRepository(Subtodo)
+    private subtodosRepository: Repository<Subtodo>,
+  ) {}
+  create(createSubtodoDto: CreateSubtodoDto): Promise<Subtodo> {
+    const subtodo = new Subtodo();
+    subtodo.body = createSubtodoDto.body;
+    subtodo.todos = createSubtodoDto.todoid;
+
+    return this.subtodosRepository.save(subtodo);
   }
 
-  findAll() {
-    return `This action returns all subtodos`;
+  async findAll(): Promise<Subtodo[]> {
+    return this.subtodosRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subtodo`;
+  findOne(id: string): Promise<Subtodo> {
+    return this.subtodosRepository.findOne(id);
   }
 
-  update(id: number, updateSubtodoDto: UpdateSubtodoDto) {
-    return `This action updates a #${id} subtodo`;
+  update(id: string, updateSubtodoDto: UpdateSubtodoDto) {
+    return this.subtodosRepository.update(id, {
+      body: updateSubtodoDto.body,
+      todos: updateSubtodoDto.todoid,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} subtodo`;
+  remove(id: string) {
+    return this.subtodosRepository.delete(id);
   }
 }
